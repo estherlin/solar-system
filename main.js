@@ -5,6 +5,19 @@ var wh = window.innerHeight;
 
 var frame = 0;
 
+// radii
+var mercury_r = 16;
+var venus_r = 24;
+var earth_r = 32;
+
+// sizes
+var sun_s = 5;
+var mercury_s = 2;
+var venus_s = 2;
+var earth_s = 2;
+
+var speed = 1;
+
 var textureLoader = new THREE.TextureLoader();
 textureLoader.crossOrigin = "";
 
@@ -39,14 +52,19 @@ function init() {
 
 
    // Create sphere and add to scene
-  createSun();
-  scene.add(sun);
+   createSun();
+   scene.add(sun);
 
+   // Create sphere and add to scene
+   createMercury();
+   scene.add(mercury);
 
-  // Create ground
-  // Add ground to scene
-  //createGround();
-  //scene.add(ground);
+   createVenus();
+   scene.add(venus);
+
+   createEarth();
+   scene.add(earth);
+
 
   // get the renderer to render our scene
   // leave the rendering to last
@@ -79,7 +97,7 @@ function createCamera() {
 
   // set position of camera
   // x = 0, y = 0, z = 500
-  camera.position.set( 20, 5, 20 );
+  camera.position.set( 100, 20, 100 );
 
 }
 
@@ -88,36 +106,63 @@ function createLight() {
 
   // colour = white, intensity = 1
   // Directional light is like the sun at a direction
-  light = new THREE.DirectionalLight(0xffffff);
+  light = new THREE.DirectionalLight(0xffffff, 1.4);
 
   // We the position of our light
   // x = 50, y = 250, z = 500
-  light.position.set(0, 0, 14);
+  light.position.set(0, 0, 800);
 }
 
 function createSun() {
-
-  // 1. geometry
-  // wdith = 200, hiegh = 200, length = 200
-  geometry = new THREE.SphereGeometry(5, 32, 16);
-
-  // 2. texture
-	sunMaterial = new THREE.MeshPhongMaterial( {
-  				specular: 0x333333,
-					shininess: 10,
-					map: textureLoader.load( 'https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg' ),
-				} );
-
-  // 3. Mesh
-  // give it a geometry and texture
-  sun = new THREE.Mesh(geometry, sunMaterial);
-
+  sun = new THREE.Mesh(
+      new THREE.SphereGeometry(sun_s, 32, 16),
+      new THREE.MeshPhongMaterial( {
+    				    specular: 0x333333,
+  					shininess: 10,
+  					map: textureLoader.load( 'textures/2k_sun.jpeg' ),
+  				} )
+  );
   // Add some position
   sun.position.set(0, 0, 0);
+}
 
-  // shadows
-  sun.castShadow = true;
+function createMercury() {
 
+    mercury = new THREE.Mesh(
+        new THREE.SphereGeometry(mercury_s, 32, 16),
+        new THREE.MeshPhongMaterial( {
+      				    specular: 0x333333,
+    					shininess: 10,
+    					map: textureLoader.load( 'textures/2k_mercury.jpeg' ),
+    				} )
+    );
+    mercury.position.set(mercury_r, 0,0);
+}
+
+function createVenus() {
+
+    venus = new THREE.Mesh(
+        new THREE.SphereGeometry(venus_s, 32, 16),
+        new THREE.MeshPhongMaterial( {
+      				    specular: 0x333333,
+    					shininess: 10,
+    					map: textureLoader.load( 'textures/2k_venus_atmosphere.jpeg' ),
+    				} )
+    );
+    venus.position.set(venus_r, 0,0);
+}
+
+function createEarth() {
+
+    earth = new THREE.Mesh(
+        new THREE.SphereGeometry(earth_s, 32, 16),
+        new THREE.MeshPhongMaterial( {
+      				    specular: 0x333333,
+    					shininess: 20,
+    					map: textureLoader.load( 'textures/earth_atmos_2048.jpeg' ),
+    				} )
+    );
+    earth.position.set(earth_r, 0,0);
 }
 
 var animate = function () {
